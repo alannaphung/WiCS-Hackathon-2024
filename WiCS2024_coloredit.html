@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown Timer with To-Do List</title>
+    <style>
+        body {
+            display: flex;
+            color: #EC20A5; /* words and button color */
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #ffd3e6 ; /* Light pink background color */
+
+
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            width: 80%;
+            background-color: #FDEEEB;
+
+        }
+
+        .timer-container,
+        .todo-container {
+            text-align: center;
+            padding: 20px;
+            border: 0px solid #ccc;
+            border-radius: 8px;
+    
+        }
+
+        #timer {
+            font-size: 2em;
+        }
+
+        #todoList {
+            list-style: none;
+            padding: 0;
+            text-align: left;
+        }
+
+        button {
+            font-size: 1em;
+            margin: 10px;
+            color: white;
+        }
+
+        .todo-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+            
+        }
+
+        .todo-item input[type="checkbox"] {
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="timer-container">
+            <h2 for="timer">Timer</h2>
+            <h1 style= "font-size: 50px;" id="timer">00:00</h1>
+            <label style= "color: #EC20A5;"for="minutes">Set Timer (minutes): </label>
+            <input type="number" id="minutes" min="1" value="5">
+            <button id="startBtn" style="background-color:  #EC20A5;" onclick="startTimer()">Start</button>
+            <button id="stopBtn" style="background-color: #EC20A5;" onclick="stopTimer()">Stop</button>
+            <button id="resetBtn" style="background-color: #EC20A5;" onclick="resetTimer()">Reset</button>
+        </div>
+
+        <div class="todo-container">
+            <h2>To-Do List</h2>
+            <ul id="todoList"></ul>
+            <input type="text" id="todoInput" placeholder="Add new item">
+            <button style="background-color:  #EC20A5;"onclick="addTodo()">Add</button>
+            <button style="background-color:  #EC20A5;" onclick="clearTodoList()">Clear All</button>
+        </div>
+    </div>
+
+    <script>
+        let timer;
+        let time = 0;
+        let initialTime = 0;
+
+        function startTimer() {
+            initialTime = parseInt(document.getElementById('minutes').value, 10) * 60;
+            time = initialTime;
+            timer = setInterval(updateTimer, 1000);
+        }
+
+        function stopTimer() {
+            clearInterval(timer);
+        }
+
+        function resetTimer() {
+            stopTimer();
+            time = initialTime;
+            updateTimerDisplay();
+        }
+
+        function updateTimer() {
+            if (time > 0) {
+                time--;
+                updateTimerDisplay();
+            } else {
+                stopTimer();
+                alert('Timer Expired!');
+            }
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(time / 60);
+            const seconds = time % 60;
+            document.getElementById('timer').innerText = `${padZero(minutes)}:${padZero(seconds)}`;
+        }
+
+        function padZero(num) {
+            return (num < 10 ? '0' : '') + num;
+        }
+
+        function addTodo() {
+            const todoInput = document.getElementById('todoInput');
+            const todoList = document.getElementById('todoList');
+
+            if (todoInput.value.trim() !== '') {
+                const newTodo = document.createElement('li');
+                newTodo.className = 'todo-item';
+                newTodo.innerHTML = `
+                    <input type="checkbox" onchange="updateTodoStatus(this)">
+                    <span>${todoInput.value}</span>
+                    <button onclick="removeTodoItem(this)">Remove</button>
+                `;
+                todoList.appendChild(newTodo);
+                todoInput.value = '';
+            }
+        }
+
+        function removeTodoItem(button) {
+            const todoItem = button.parentNode;
+            const todoList = document.getElementById('todoList');
+            todoList.removeChild(todoItem);
+        }
+
+        function clearTodoList() {
+            const todoList = document.getElementById('todoList');
+            todoList.innerHTML = '';
+        }
+
+        function updateTodoStatus(checkbox) {
+            const todoItem = checkbox.parentNode;
+            const todoText = todoItem.querySelector('span');
+            
+            if (checkbox.checked) {
+                todoText.style.textDecoration = 'line-through';
+            } else {
+                todoText.style.textDecoration = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
