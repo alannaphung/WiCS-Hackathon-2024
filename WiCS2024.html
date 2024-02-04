@@ -7,17 +7,23 @@
     <style>
         body {
             display: flex;
+            color: #EC20A5; /* words and button color */
             align-items: center;
             justify-content: center;
             height: 100vh;
             margin: 0;
             font-family: Arial, sans-serif;
+            background-color: #ffd3e6; /* Light pink background color */
+
+
         }
 
         .container {
             display: flex;
             justify-content: space-between;
             width: 80%;
+            background-color: white;
+
         }
 
         .timer-container,
@@ -42,6 +48,7 @@
         button {
             font-size: 1em;
             margin: 10px;
+            color: #ffd3e6;
         }
 
         .todo-item {
@@ -50,6 +57,7 @@
             justify-content: space-between;
             padding: 8px;
             border-bottom: 1px solid #ddd;
+            
         }
 
         .todo-item input[type="checkbox"] {
@@ -73,6 +81,7 @@
             <ul id="todoList"></ul>
             <input type="text" id="todoInput" placeholder="Add new item">
             <button onclick="addTodo()">Add</button>
+            <button style="color: #ccc;"</button>
             <button onclick="clearTodoList()">Clear All</button>
         </div>
     </div>
